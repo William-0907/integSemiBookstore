@@ -106,10 +106,10 @@
             </div>
       
             
-            <div class="d-flex flex-column flex-lg-row align-items-center gap-2 order-2 order-lg-1">
+            <div class="d-flex flex-column flex-lg-row align-items-center gap-5 order-2 order-lg-1">
               
-              <a class="nav-link" href="#">Home</a>
-              <a class="nav-link" href="#">Books</a>
+              <a class="nav-link" href="{% url 'home' %}">Home</a>
+              <a class="nav-link" href="{% url 'book_list' %}">Books</a>
               <a class="nav-link" href="{% url 'cart' %}">Cart</a>
             </div>
             {% else %}
@@ -128,7 +128,7 @@
   
   {% block content %}{% endblock %}
 
-  <footer class="text-center py-4 mt-5 text-muted bg-primary-subtle bottom-0">
+  <footer class="text-center py-4 mt-5 text-muted bg-primary-subtle bottom-0 w-100 position-relative">
     &copy; 2025 Cantos BookStore. All rights reserved.
   </footer>
 

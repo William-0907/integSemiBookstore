@@ -18,3 +18,6 @@ def book_search(request):
     results = Books.objects.filter(title__icontains=query) if query else []
     return render(request, 'website/search_results.html', {'results': results, 'query': query})
 
+def book_list(request):
+    books = Books.objects.all()
+    return render(request, 'website/book_list.html', {'books': books})
