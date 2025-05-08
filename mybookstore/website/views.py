@@ -1,20 +1,20 @@
 from django.shortcuts import render,redirect
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from books.models import Books
 
-# Create your views here.
 def home(request):
-    return render(request, 'website/home.html',)
+    items = Books.objects.all()
+    new_arr = items.filter(new_arrival=True)
+    featured = items.filter(featured=True)
+    return render(request, 'website/home.html', {
+        'books': items,
+        'new_arr': new_arr,
+        'featured':featured
+    })
+  
+  
+def book_search(request):
+    query = request.GET.get('q')
+    results = Books.objects.filter(title__icontains=query) if query else []
+    return render(request, 'website/search_results.html', {'results': results, 'query': query})
 
-def login(request):
-    return render(request, 'website/login.html',)
-
-
-def register(request):
-  if request.method == 'POST':
-    form = UserCreationForm(request.POST)
-    if form.isvalid():
-      username = form.cleaned_data.get('username')
-      return redirect('login')
-  else:
-    form = UserCreationForm(request.POST)
-    return render(request, 'website/register.html', { 'form':form })
