@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Books, CartItem
+from .models import Books, CartItem, Review
 from django.contrib.auth.decorators import login_required
-from books.models import Books
+from .forms import ReviewForm
 from django.contrib import messages
 
 @login_required
@@ -97,3 +97,30 @@ def checkout(request):
 def place_order(request):
     messages.success(request, 'Order has been placed!')
     return redirect('home')
+    
+    
+    
+  
+
+def book_detail(request, book_id):
+    book = get_object_or_404(Books, id=book_id)
+    reviews = book.reviews.all().order_by('-created_at')
+
+    if request.method == 'POST':
+        if not request.user.is_authenticated:
+            return redirect('login')
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.book = book
+            review.user = request.user
+            review.save()
+            return redirect('book_detail', book_id=book.id)
+    else:
+        form = ReviewForm()
+
+    return render(request, 'books/book_detail.html', {
+        'book': book,
+        'reviews': reviews,
+        'form': form
+    })

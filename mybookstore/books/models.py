@@ -21,3 +21,11 @@ class CartItem(models.Model):
 
     class Meta:
         unique_together = ('user', 'book')
+
+class Review(models.Model):
+    book = models.ForeignKey(Books, related_name='reviews', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField()
+    rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
+    created_at = models.DateTimeField(auto_now_add=True)
+
